@@ -64,7 +64,6 @@ def register(request):
 def books(request):
     books = Book.objects.all()
     paginator = Paginator(books, 5)  # Show 5 books per page
-
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
