@@ -67,7 +67,7 @@ def books(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'book_manager/books.html', {'books': books})
+    return render(request, 'book_manager/books.html', {'books': page_obj})
 
 """ Book Page """
 def book(request, book_id):

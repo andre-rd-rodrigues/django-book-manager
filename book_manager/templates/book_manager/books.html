@@ -1,26 +1,30 @@
 {% extends "book_manager/layout.html" %} 
+
 {% block body %}
 <h1 class="content-title">Books</h1>
 
 <div class="row">
-  {% for book in books %}
-    {% include "book_manager/_book_card.html" with book=book %}
+  {% for book in books %} 
+    {% include "book_manager/_book_card.html" with book=book %} 
   {% endfor %}
-  
 </div>
 
-<div class="text-center mt-20">
+<div class="text-center mb-5">
   <div class="btn-group" role="group">
     {% if books.has_previous %}
-      <a href="?page={{ books.previous_page_number }}" class="btn btn-secondary">Previous</a>
+    <a href="?page={{ books.previous_page_number }}" class="btn btn-secondary"
+      >Previous</a
+    >
     {% endif %}
-    
+
     <button class="btn btn-secondary" disabled>
       Page {{ books.number }} of {{ books.paginator.num_pages }}
     </button>
-    
+
     {% if books.has_next %}
-      <a href="?page={{ books.next_page_number }}" class="btn btn-secondary">Next</a>
+    <a href="?page={{ books.next_page_number }}" class="btn btn-secondary"
+      >Next</a
+    >
     {% endif %}
   </div>
 </div>
