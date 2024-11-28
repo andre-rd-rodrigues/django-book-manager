@@ -58,15 +58,15 @@
               <a class="nav-link" aria-current="page" href="/books">Reading List</a>
             </li>
           </ul>
-          <div class="d-flex">
+          <div class="d-flex align-items-center justify-content-center">
             {% if user.is_authenticated %}
+              <div class="navbar-text me-3">Welcome {{ user.username }}!</div>
               <div class="navbar-text me-3">
                 <a class="btn btn-secondary" href="/books/new">Add Book</a>
-                Welcome, {{ user.username }}
               </div>
-              <a class="btn btn-outline-secondary" href="{% url 'logout' %}">Logout</a>
+              <div><a class="btn btn-secondary me-2" href="{% url 'logout' %}">Logout</a></div>
             {% else %}
-              <a class="btn btn-outline-secondary me-2" href="{% url 'login' %}">Login</a>
+              <div><a class="btn btn-outline-secondary me-2" href="{% url 'login' %}">Login</a></div>
               <a class="btn btn-outline-secondary" href="{% url 'register' %}">Register</a>
             {% endif %}
           </div>

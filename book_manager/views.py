@@ -1,4 +1,9 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.db import IntegrityError
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 def index(request):
     return render(request, "book_manager/index.html")
