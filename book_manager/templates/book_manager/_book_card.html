@@ -21,14 +21,20 @@
     <div class="card-footer d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-2">
         <!-- Like Button -->
-        <button class="btn text-danger p-0 me-2 like-button" data-book-id="{{ book.id }}">
-          {% if book.is_liked %}
+        <button
+        class="btn text-danger p-0 me-2 like-button"
+        data-book-id="{{ book.id }}"
+        id="like-button-{{ book.id }}"
+        >
+          {% if book.is_liked_by_user %}
             <i class="fas fa-heart text-danger"></i>
           {% else %}
-            <i class="far fa-heart"></i>
+          <i class="far fa-heart"></i>
           {% endif %}
+          <span class="likes-count text-muted" id="likes-count-{{ book.id }}">{{ book.likes.count }}</span>
         </button>
-        <span class="likes-count">{{ book.likes_count }}</span>
+      
+
 
         <!-- Reading List Button -->
         <button class="btn text-warning p-0 reading-list-button" data-book-id="{{ book.id }}">

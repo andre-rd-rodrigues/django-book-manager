@@ -24,6 +24,12 @@ class Book(models.Model):
     def total_likes(self):
         return self.likes.count()
 
+    def is_liked(self, user):
+        """Check if the book is liked by the given user."""
+        if user.is_authenticated:
+            return self.likes.filter(user=user).exists()
+        return False
+
 class Comment(models.Model):
     """Model to represent comments on books."""
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="comments")
