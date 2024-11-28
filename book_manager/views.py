@@ -80,6 +80,10 @@ def book(request, book_id):
     book = Book.objects.get(id=book_id)
     return render(request, 'book_manager/book.html', {'book': book})
 
+""" Add Book Page """
+def add_book(request):
+    return render(request, 'book_manager/add_book.html')
+
 """ API """
 def like_book(request):
     if request.method == "POST" and request.user.is_authenticated:
