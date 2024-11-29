@@ -77,6 +77,7 @@ def books_page(request):
 
     return render(request, 'book_manager/books.html', {'books': page_obj})
 
+@login_required
 def book_page(request, book_id):
     book = Book.objects.get(id=book_id)
     return render(request, 'book_manager/book.html', {'book': book})
@@ -93,6 +94,27 @@ def add_book_page(request):
             return render(request, 'book_manager/add_book.html', {'form': form})
     form = BookForm()
     return render(request, 'book_manager/add_book.html', {'form': form})
+
+@login_required
+def edit_book_page(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    
+
+    # Check if current user is the creator of the book
+    if request.user != book.user:
+        messages.error(request, 'You can only edit books that you created.')
+        return redirect('books_page')
+
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Book was edited successfully!')
+            return redirect('books_page')
+        else:
+            return render(request, 'book_manager/edit_book.html', {'form': form})
+    form = BookForm(instance=book)     
+    return render(request, 'book_manager/edit_book.html', {'form': form})
 
 """ API """
 @login_required

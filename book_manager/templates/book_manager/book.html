@@ -2,4 +2,12 @@
 {% block body %}
 <h1>{{ book.title }}</h1>
 
+{% if user == book.user %}
+<div class="row mt-3">
+    <div class="col">
+        <a href="{% url 'edit_book_page' book.id %}" class="btn btn-secondary">Edit Book</a>
+    </div>
+</div>
+{% endif %}
+
 {% endblock %}

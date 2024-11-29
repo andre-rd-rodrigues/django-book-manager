@@ -18,6 +18,7 @@ class Command(BaseCommand):
         if created:
             admin_user.set_password("admin")  # Set a default password
             admin_user.save()
+            self.stdout.write(self.style.SUCCESS("Admin user created with username 'admin' and password 'admin'."))
 
         # Add famous authors
         authors = {
@@ -40,6 +41,7 @@ class Command(BaseCommand):
                 "description": "The first book in the Harry Potter series introduces us to Harry, a young wizard, and his adventures at Hogwarts.",
                 "published_date": "1997-06-26",
                 "cover_image": "https://covers.openlibrary.org/b/id/7984916-L.jpg",
+                "genre": "Fantasy",
             },
             {
                 "title": "1984",
@@ -47,6 +49,7 @@ class Command(BaseCommand):
                 "description": "A dystopian novel set in a totalitarian society ruled by Big Brother.",
                 "published_date": "1949-06-08",
                 "cover_image": "https://covers.openlibrary.org/b/id/12693610-M.jpg",
+                "genre": "Dystopian",
             },
             {
                 "title": "To Kill a Mockingbird",
@@ -54,6 +57,7 @@ class Command(BaseCommand):
                 "description": "A novel about racial injustice in the Deep South, seen through the eyes of young Scout Finch.",
                 "published_date": "1960-07-11",
                 "cover_image": "https://covers.openlibrary.org/b/id/12907439-M.jpg",
+                "genre": "Fiction",
             },
             {
                 "title": "The Great Gatsby",
@@ -61,6 +65,7 @@ class Command(BaseCommand):
                 "description": "A tragic love story set in the roaring 1920s, focusing on Jay Gatsby's obsession with Daisy Buchanan.",
                 "published_date": "1925-04-10",
                 "cover_image": "https://covers.openlibrary.org/b/id/12364437-M.jpg",
+                "genre": "Fiction",
             },
             {
                 "title": "The Hobbit",
@@ -68,6 +73,7 @@ class Command(BaseCommand):
                 "description": "A prelude to The Lord of the Rings, following Bilbo Baggins' journey to reclaim a treasure guarded by Smaug the dragon.",
                 "published_date": "1937-09-21",
                 "cover_image": "https://covers.openlibrary.org/b/id/14627222-M.jpg",
+                "genre": "Fantasy",
             },
         ]
 
@@ -78,6 +84,8 @@ class Command(BaseCommand):
                 description=book_data["description"],
                 published_date=book_data["published_date"],
                 cover_image=book_data["cover_image"],
+                genre=book_data["genre"],
+                user=admin_user,
             )
 
         self.stdout.write(self.style.SUCCESS("Database restored with 5 famous books."))

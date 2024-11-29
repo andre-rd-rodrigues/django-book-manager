@@ -25,6 +25,7 @@ class Book(models.Model):
         ('Self-Help', 'Self-Help'),
     ]
 
+    user= models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_books")
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books")
     description = models.TextField(blank=True, null=True)
@@ -32,7 +33,7 @@ class Book(models.Model):
     published_date = models.DateField(blank=True, null=True)
     genre = models.CharField(max_length=100, blank=True, null=True, choices=GENRES)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
     def __str__(self):
         return self.title
 
