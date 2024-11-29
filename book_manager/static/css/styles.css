@@ -1,0 +1,14 @@
+/* Remove the default list style */
+ul.errorlist {
+  list-style: none; /* Remove bullet points */
+  margin: 0;
+  padding: 0;
+  color: #dc3545;
+  font-size: 0.875rem; /* Smaller text size for errors */
+}
+
+/* Style each error message (list item) */
+ul.errorlist li {
+  margin-top: 0.25rem; /* Add spacing between errors */
+  padding: 0.25rem 0; /* Padding for readability */
+}

@@ -1,12 +1,14 @@
 import json
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.core.paginator import Paginator
 from .models import Book, Like
+from .forms import BookForm
 
 def index(request):
     return render(request, "book_manager/index.html")
@@ -61,10 +63,9 @@ def register(request):
     else:
         return render(request, "book_manager/register.html")
 
-""" Books Page """
-def books(request):
+def books_page(request):
     books = Book.objects.all()
-    paginator = Paginator(books, 5)  # Show 5 books per page
+    paginator = Paginator(books, 6)  # Show 5 books per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -75,14 +76,21 @@ def books(request):
 
     return render(request, 'book_manager/books.html', {'books': page_obj})
 
-""" Book Page """
-def book(request, book_id):
+def book_page(request, book_id):
     book = Book.objects.get(id=book_id)
     return render(request, 'book_manager/book.html', {'book': book})
 
-""" Add Book Page """
-def add_book(request):
-    return render(request, 'book_manager/add_book.html')
+@login_required
+def add_book_page(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('books_page')
+        else:
+            return render(request, 'book_manager/add_book.html', {'form': form})
+    form = BookForm()
+    return render(request, 'book_manager/add_book.html', {'form': form})
 
 """ API """
 def like_book(request):
@@ -106,3 +114,6 @@ def like_book(request):
         print(like_count, liked)
         return JsonResponse({"liked": liked, "like_count": like_count})
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+

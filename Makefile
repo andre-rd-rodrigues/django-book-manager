@@ -6,3 +6,9 @@ shell_plus:
 
 restore-db:
 	python3 manage.py restore_db
+
+migrate:
+	python3 manage.py migrate
+
+makemigrations:
+	python3 manage.py makemigrations book_manager
