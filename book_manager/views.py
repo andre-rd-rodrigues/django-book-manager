@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 from .models import Book, Like
 from .forms import BookForm
+from django.contrib import messages
 
 def index(request):
     return render(request, "book_manager/index.html")
@@ -86,6 +87,7 @@ def add_book_page(request):
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'New book was added successfully!')
             return redirect('books_page')
         else:
             return render(request, 'book_manager/add_book.html', {'form': form})
@@ -93,8 +95,9 @@ def add_book_page(request):
     return render(request, 'book_manager/add_book.html', {'form': form})
 
 """ API """
+@login_required
 def like_book(request):
-    if request.method == "POST" and request.user.is_authenticated:
+    if request.method == "POST":
         data = json.loads(request.body)
         book_id = data.get("book_id")
         book = get_object_or_404(Book, id=book_id)

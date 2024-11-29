@@ -75,12 +75,15 @@
       </div>
     </nav>
     {% if messages %}
-      <div class="alert alert-success">
+    <div class="d-flex justify-content-end">
+      <div class="alert alert-success alert-dismissible fade show" id="message-alert" role="alert">
         {% for message in messages %}
           {{ message }}
         {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-    {% endif %}
+    </div>
+  {% endif %}
     <div class="body container mt-5">{% block body %} {% endblock %}</div>
 
     <!-- Custom JS -->
