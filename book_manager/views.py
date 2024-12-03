@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.core.paginator import Paginator
 from .models import Book, Like, ReadingList, Author
-from .forms import BookForm
+from .forms import BookForm, AuthorForm
 from django.contrib import messages
 
 def index(request):
@@ -149,6 +149,8 @@ def add_author_page(request):
         if form.is_valid():
             form.save()
             return redirect('authors_page')
+    form = AuthorForm()
+    return render(request, 'book_manager/add_author.html', {'form': form})
 
 @login_required
 def edit_author_page(request, author_id):
