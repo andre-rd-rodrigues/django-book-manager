@@ -140,5 +140,12 @@ def like_book(request):
         return JsonResponse({"liked": liked, "like_count": like_count})
     return JsonResponse({"error": "Invalid request"}, status=400)
 
-
+@login_required
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.user != book.user:
+        messages.error(request, 'You can only delete books that you created.')
+        return redirect('books_page')
+    book.delete()
+    return redirect('books_page')
 
