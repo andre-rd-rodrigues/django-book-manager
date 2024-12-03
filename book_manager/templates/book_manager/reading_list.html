@@ -1,5 +1,53 @@
-{% extends "book_manager/layout.html" %} 
-{% block body %}
-<h1>Reading List</h1>
+{% extends "book_manager/layout.html" %}
 
+{% block body %}
+<h1 class="content-title">Reading List</h1>
+<div class="row mt-5">
+  {% for book in books %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100">
+        {% if book.cover_image %}
+          <img src="{{ book.cover_image }}" alt="{{ book.title }} cover"  class="card-img-top img-fluid w-full"
+          style="height: 450px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          {% if book.author %}
+            <p class="card-text text-muted">by {{ book.author }}</p>
+          {% endif %}
+
+          <!-- Dropdown for status management -->
+          <form action="{% url 'manage_reading_list' book.id %}" method="POST" class="mb-3 update-status-form">
+            {% csrf_token %}
+            <label for="status-{{ book.id }}" class="form-label"><b>Status:</b></label>
+            <select 
+              id="status-{{ book.id }}" 
+              name="status" 
+              class="form-control reading-list-status" 
+              data-book-id="{{ book.id }}"
+            >
+              <option value="reading" {% if book.status == 'reading' %}selected{% endif %}>Reading</option>
+              <option value="finished" {% if book.status == 'finished' %}selected{% endif %}>Finished</option>
+            </select>
+            <button type="submit" class="btn btn-primary w-100 mt-2 update-status-button">
+              Update Status
+            </button>
+          </form>
+
+          <!-- Remove from Reading List Button -->
+          <button 
+            class="btn btn-danger remove-from-reading-list w-100" 
+            data-book-id="{{ book.id }}"
+          >
+            Remove from Reading List
+          </button>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <p class="text-center mt-5">Your reading list is empty.</p>
+    </div>
+  {% endfor %}
+</div>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block body %}
 <h1 class="content-title">Books</h1>
 
-<div class="row">
+<div class="row mt-5">
   {% for book in books %} 
     {% include "book_manager/_book_card.html" with book=book %} 
   {% endfor %}

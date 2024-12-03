@@ -37,7 +37,9 @@
 
 
         <!-- Reading List Button -->
-        <button class="btn text-warning p-0 reading-list-button" data-book-id="{{ book.id }}">
+        <button 
+        class="btn text-warning bookmark-button" 
+        data-book-id="{{ book.id }}">
           {% if book.in_reading_list %}
             <i class="fas fa-bookmark"></i>
           {% else %}

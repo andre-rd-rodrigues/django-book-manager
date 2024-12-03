@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Like book
   document.querySelectorAll(".like-button").forEach((button) => {
-    console.log("runned");
     button.addEventListener("click", function () {
       const bookId = this.getAttribute("data-book-id");
       const likeCountElement = document.getElementById(`likes-count-${bookId}`);
@@ -39,10 +39,99 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // Delete book
   document.querySelectorAll(".delete-button").forEach((button) => {
     button.addEventListener("click", function () {
       const bookId = this.getAttribute("data-book-id");
       deleteBook(bookId);
+    });
+  });
+
+  // Toggle bookmark
+  document.querySelectorAll(".bookmark-button").forEach((button) => {
+    button.addEventListener("click", function () {
+      const bookId = this.getAttribute("data-book-id");
+
+      // Send request to toggle bookmark
+      fetch(`/reading/${bookId}`, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": getCookie("csrftoken"),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ action: "toggle_bookmark" })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "added") {
+            this.innerHTML = '<i class="fas fa-bookmark"></i>';
+          } else if (data.status === "removed") {
+            this.innerHTML = '<i class="far fa-bookmark"></i>';
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+  });
+
+  // Update book status
+  document.querySelectorAll(".update-status-form").forEach((form) => {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const bookId = this.querySelector(".reading-list-status").getAttribute(
+        "data-book-id"
+      );
+      const status = this.querySelector(".reading-list-status").value;
+
+      fetch(`/reading/${bookId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+            .value
+        },
+        body: JSON.stringify({ status })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            console.error("Error updating status:", data.error);
+          } else {
+            console.log(
+              `Status updated to ${data.status} for book ID ${bookId}`
+            );
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+  });
+
+  // Remove book from reading list
+  document.querySelectorAll(".remove-from-reading-list").forEach((button) => {
+    button.addEventListener("click", function () {
+      const bookId = this.getAttribute("data-book-id");
+
+      fetch(`/reading/${bookId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+            .value
+        },
+        body: JSON.stringify({ action: "toggle_bookmark" })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "removed") {
+            // Remove the book's card from the DOM
+            const card = button.closest(".col-12");
+            card.parentNode.removeChild(card);
+            window.location.reload();
+          } else {
+            console.error("Unexpected response:", data);
+          }
+        })
+        .catch((error) => console.error("Error:", error));
     });
   });
 

@@ -33,7 +33,7 @@ class Book(models.Model):
     published_date = models.DateField(blank=True, null=True)
     genre = models.CharField(max_length=100, blank=True, null=True, choices=GENRES)
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         return self.title
 
@@ -45,6 +45,17 @@ class Book(models.Model):
         if user.is_authenticated:
             return self.likes.filter(user=user).exists()
         return False
+
+    def status(self, user):
+        """Get the reading status for a specific user."""
+        if not user.is_authenticated:
+            return None
+        try:
+            reading_list_entry = self.reading_lists.get(user=user)
+            return reading_list_entry.status
+        except ReadingList.DoesNotExist:
+            return None
+
 
 class Comment(models.Model):
     """Model to represent comments on books."""
