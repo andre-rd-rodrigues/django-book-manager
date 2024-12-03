@@ -116,6 +116,10 @@ def edit_book_page(request, book_id):
     form = BookForm(instance=book)     
     return render(request, 'book_manager/edit_book.html', {'form': form})
 
+@login_required
+def reading_list_page(request):
+    return render(request, 'book_manager/reading_list.html')
+    
 """ API """
 @login_required
 def like_book(request):
