@@ -155,7 +155,17 @@ def add_author_page(request):
 @login_required
 def edit_author_page(request, author_id):
     author = get_object_or_404(Author, id=author_id)
-    return render(request, 'book_manager/edit_author.html', {'author': author})
+    if request.user != author.created_by and not request.user.is_superuser:
+        messages.error(request, 'You can only edit authors that you created.')
+        return redirect('authors_page')
+    
+    if request.method == 'POST':
+        form = AuthorForm(request.POST, instance=author)
+        if form.is_valid():
+            form.save()
+            return redirect('authors_page')
+    form = AuthorForm(instance=author)
+    return render(request, 'book_manager/edit_author.html', {'form': form})
 
 """ API """
 @login_required

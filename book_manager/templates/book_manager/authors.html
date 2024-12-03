@@ -8,29 +8,44 @@
             <a href="{% url 'add_author_page' %}" class="btn btn-primary">Add Author</a>
         </div>
 
-        <div class="card p-0">
+        <div>
           {% if authors %}
-              <div class="list-group list-group-flush">
+              <div class="accordion" id="authorsAccordion">
                   {% for author in authors %}
-                      <div class="list-group-item d-flex justify-content-between align-items-center">
-                          <div class="d-flex flex-grow-1">
-                              <div class="me-4">
-                                  <h5 class="mb-0">{{ author.name }}</h5>
-                                  <p class="mb-0">{{ author.bio }}</p>
+                      <div class="accordion-item">
+                          <div class="list-group-item d-flex justify-content-between align-items-center p-2">
+                              <div class="d-flex flex-grow-1">
+                                  <div class="me-4">
+                                      <h5 class="mb-2">{{ author.name }}</h5>
+                                      <button class="btn p-0 btn-link text-decoration-none" 
+                                              type="button" 
+                                              data-bs-toggle="collapse" 
+                                              data-bs-target="#collapse{{ author.id }}" 
+                                              aria-expanded="false" 
+                                              aria-controls="collapse{{ author.id }}">
+                                          <i class="fas fa-chevron-down"></i>
+                                          View Bio
+                                      </button>
+                                  </div>
+                              </div>
+                              {% if user.is_superuser or author.created_by == user %}
+                                  <div class="btn-group">
+                                      <a href="{% url 'edit_author_page' author.id %}" class="btn btn-sm btn-outline-primary">
+                                          <i class="fas fa-edit"></i> Edit
+                                      </a>
+                                      <button type="button" 
+                                              class="btn btn-sm btn-outline-danger" 
+                                              onclick="deleteAuthor('{{ author.id }}')">
+                                          <i class="fas fa-trash"></i> Delete
+                                      </button>
+                                  </div>
+                              {% endif %}
+                          </div>
+                          <div id="collapse{{ author.id }}" class="accordion-collapse collapse" data-bs-parent="#authorsAccordion">
+                              <div class="accordion-body">
+                                  {{ author.bio }}
                               </div>
                           </div>
-                          {% if user.is_superuser or author.created_by == user %}
-                              <div class="btn-group">
-                                  <a href="{% url 'edit_author_page' author.id %}" class="btn btn-sm btn-outline-primary">
-                                      <i class="fas fa-edit"></i> Edit
-                                  </a>
-                                  <button type="button" 
-                                          class="btn btn-sm btn-outline-danger" 
-                                          onclick="deleteAuthor('{{ author.id }}')">
-                                      <i class="fas fa-trash"></i> Delete
-                                  </button>
-                              </div>
-                          {% endif %}
                       </div>
                   {% endfor %}
               </div>

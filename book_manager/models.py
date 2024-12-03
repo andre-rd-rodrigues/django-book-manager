@@ -4,7 +4,8 @@ from django.db import models
 class Author(models.Model):
     name = models.CharField(max_length=200)
     bio = models.TextField(blank=True, null=True)
-    
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_authors")
+
     def __str__(self):
         return self.name
 

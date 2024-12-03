@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
         author_objects = {}
         for name, bio in authors.items():
-            author_objects[name] = Author.objects.create(name=name, bio=bio)
+            author_objects[name] = Author.objects.create(name=name, bio=bio, created_by=admin_user)
 
         # Add famous books with image placeholders
         books = [
