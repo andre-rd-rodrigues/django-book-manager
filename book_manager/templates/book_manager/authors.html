@@ -1,0 +1,69 @@
+{% extends "book_manager/layout.html" %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="content-wrapper">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h1 class="content-title ">Authors</h1>
+            <a href="{% url 'add_author_page' %}" class="btn btn-primary">Add Author</a>
+        </div>
+
+        <div class="card p-0">
+          {% if authors %}
+              <div class="list-group list-group-flush">
+                  {% for author in authors %}
+                      <div class="list-group-item d-flex justify-content-between align-items-center">
+                          <div class="d-flex flex-grow-1">
+                              <div class="me-4">
+                                  <h5 class="mb-0">{{ author.name }}</h5>
+                                  <p class="mb-0">{{ author.bio }}</p>
+                              </div>
+                          </div>
+                          {% if user.is_superuser or author.created_by == user %}
+                              <div class="btn-group">
+                                  <a href="{% url 'edit_author_page' author.id %}" class="btn btn-sm btn-outline-primary">
+                                      <i class="fas fa-edit"></i> Edit
+                                  </a>
+                                  <button type="button" 
+                                          class="btn btn-sm btn-outline-danger" 
+                                          onclick="deleteAuthor('{{ author.id }}')">
+                                      <i class="fas fa-trash"></i> Delete
+                                  </button>
+                              </div>
+                          {% endif %}
+                      </div>
+                  {% endfor %}
+              </div>
+          {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    {% if authors %}
+    <div class="text-center mt-5">
+      <div class="btn-group" role="group">
+        {% if authors.has_previous %}
+        <a href="?page={{ authors.previous_page_number }}" class="btn btn-secondary"
+          >Previous</a
+        >
+        {% endif %}
+    
+        <button class="btn btn-secondary" disabled>
+          Page {{ authors.number }} of {{ authors.paginator.num_pages }}
+        </button>
+    
+        {% if authors.has_next %}
+        <a href="?page={{ authors.next_page_number }}" class="btn btn-secondary"
+          >Next</a
+        >
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if not authors %}
+    <div class="text-center mt-5">
+        <p class="text-muted mb-0">No authors found.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

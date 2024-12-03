@@ -50,4 +50,27 @@
     </div>
   {% endfor %}
 </div>
+
+ <!-- Pagination -->
+ {% if books %}
+ <div class="text-center mt-4">
+  <div class="btn-group" role="group">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary"
+      >Previous</a
+    >
+    {% endif %}
+
+    <button class="btn btn-secondary" disabled>
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </button>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-secondary"
+      >Next</a
+    >
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.core.paginator import Paginator
-from .models import Book, Like, ReadingList
+from .models import Book, Like, ReadingList, Author
 from .forms import BookForm
 from django.contrib import messages
 
@@ -132,7 +132,28 @@ def reading_list_page(request):
         book.in_reading_list = True
         books_with_status.append(book)
     
-    return render(request, 'book_manager/reading_list.html', {'books': books_with_status})
+    return render(request, 'book_manager/reading_list.html', {'books': books_with_status, 'page_obj': page_obj})
+
+def authors_page(request):
+    authors = Author.objects.all()
+    paginator = Paginator(authors, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)  
+    
+    return render(request, 'book_manager/authors.html', {'authors': page_obj})
+
+@login_required
+def add_author_page(request):
+    if request.method == 'POST':
+        form = AuthorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('authors_page')
+
+@login_required
+def edit_author_page(request, author_id):
+    author = get_object_or_404(Author, id=author_id)
+    return render(request, 'book_manager/edit_author.html', {'author': author})
 
 """ API """
 @login_required

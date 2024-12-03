@@ -30,3 +30,24 @@ class BookForm(forms.ModelForm):
         if Book.objects.filter(title__iexact=title).exists():
             raise forms.ValidationError("A book with this title already exists.")
         return title
+
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = ['name', 'bio']
+        labels = {
+            'name': 'Name',
+            'bio': 'Biography',
+        }
+        
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter the author name'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter a bio'}),
+        }
+
+    def clean_name(self):
+        """Ensure the author name is unique."""
+        name = self.cleaned_data.get('name')
+        if Author.objects.filter(name__iexact=name).exists():
+            raise forms.ValidationError("An author with this name already exists.")
+        return name        

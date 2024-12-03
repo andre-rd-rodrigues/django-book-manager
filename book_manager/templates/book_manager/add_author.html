@@ -1,0 +1,13 @@
+{% extends "book_manager/layout.html" %}
+
+{% block body %}
+<div class="d-flex align-items-center justify-content-center flex-column"> 
+  <h1>Add Author</h1>
+
+  <form method="POST" class="w-50">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Add Author</button>
+  </form>
+</div>
+{% endblock %}
