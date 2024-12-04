@@ -147,8 +147,12 @@ def add_author_page(request):
     if request.method == 'POST':
         form = AuthorForm(request.POST)
         if form.is_valid():
+            form.instance.created_by = request.user
             form.save()
+            messages.success(request, 'Author added successfully!')
             return redirect('authors_page')
+        else:
+            return render(request, 'book_manager/add_author.html', {'form': form})      
     form = AuthorForm()
     return render(request, 'book_manager/add_author.html', {'form': form})
 
@@ -163,7 +167,11 @@ def edit_author_page(request, author_id):
         form = AuthorForm(request.POST, instance=author)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Author updated successfully!')
             return redirect('authors_page')
+        else:
+            return render(request, 'book_manager/edit_author.html', {'form': form})   
+
     form = AuthorForm(instance=author)
     return render(request, 'book_manager/edit_author.html', {'form': form})
 

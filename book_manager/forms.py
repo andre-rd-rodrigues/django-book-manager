@@ -48,6 +48,6 @@ class AuthorForm(forms.ModelForm):
     def clean_name(self):
         """Ensure the author name is unique."""
         name = self.cleaned_data.get('name')
-        if Author.objects.filter(name__iexact=name).exists():
+        if Author.objects.filter(name__iexact=name).exclude(id=self.instance.id).exists():
             raise forms.ValidationError("An author with this name already exists.")
-        return name        
+        return name
