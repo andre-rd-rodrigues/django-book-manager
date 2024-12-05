@@ -25,22 +25,30 @@
     <div class="card-footer d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center gap-2">
         <!-- Like Button -->
-        <button
-        class="btn text-danger p-0 me-2 like-button"
-        data-book-id="{{ book.id }}"
-        id="like-button-{{ book.id }}"
-        >
-          {% if book.is_liked_by_user %}
-            <i class="fas fa-heart text-danger"></i>
-          {% else %}
-          <i class="far fa-heart"></i>
-          {% endif %}
-          <span class="likes-count text-muted" id="likes-count-{{ book.id }}">{{ book.likes.count }}</span>
-        </button>
+        {% if user.is_authenticated %}
+          <button
+          class="btn text-danger p-0 me-2 like-button"
+          data-book-id="{{ book.id }}"
+          id="like-button-{{ book.id }}"
+          >
+            {% if book.is_liked_by_user %}
+              <i class="fas fa-heart text-danger"></i>
+            {% else %}
+              <i class="far fa-heart"></i>
+            {% endif %}
+            <span class="likes-count text-muted" id="likes-count-{{ book.id }}">{{ book.likes.count }}</span>
+          </button>
+        {% else %}
+          <a href="{% url 'login' %}?next={{ request.path }}" class="btn text-danger p-0 me-2">
+            <i class="far fa-heart"></i>
+            <span class="text-muted">{{ book.likes.count }}</span>
+          </a>
+        {% endif %}
       
 
 
         <!-- Reading List Button -->
+        {% if user.is_authenticated %}
         <button 
         class="btn text-warning bookmark-button" 
         data-book-id="{{ book.id }}">
@@ -50,10 +58,15 @@
             <i class="far fa-bookmark"></i>
           {% endif %}
         </button>
+        {% else %}
+        <a href="{% url 'login' %}?next={{ request.path }}" class="btn text-warning p-0 me-2">
+          <i class="far fa-bookmark"></i>
+        </a>
+        {% endif %}
       </div>
 
       <!-- View Button -->
-      <a href="{% url 'book_page' book.id %}" class="btn btn-primary">View</a>
+      <a href="{% url 'book_page' book.id %}" class="btn btn-outline-secondary">View</a>
     </div>
   </div>
 </div>

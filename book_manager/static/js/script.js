@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const iconElement = this.querySelector("i");
 
       // Send POST request to like the book
-      fetch("/books/like", {
+      fetch("/books/like/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function () {
       const bookId = this.getAttribute("data-book-id");
 
-      fetch(`/books/${bookId}/delete`, {
+      fetch(`/books/${bookId}/delete/`, {
         method: "DELETE",
         headers: {
           "X-CSRFToken": getCookie("csrftoken")
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const bookId = this.getAttribute("data-book-id");
 
       // Send request to toggle bookmark
-      fetch(`/reading/${bookId}`, {
+      fetch(`/reading/${bookId}/`, {
         method: "POST",
         headers: {
           "X-CSRFToken": getCookie("csrftoken"),
@@ -95,12 +95,11 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       const status = this.querySelector(".reading-list-status").value;
 
-      fetch(`/reading/${bookId}`, {
+      fetch(`/reading/${bookId}/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
-            .value
+          "X-CSRFToken": getCookie("csrftoken")
         },
         body: JSON.stringify({ status })
       })
@@ -109,6 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (data.error) {
             console.error("Error updating status:", data.error);
           } else {
+            window.location.reload();
             console.log(
               `Status updated to ${data.status} for book ID ${bookId}`
             );
@@ -118,36 +118,44 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Remove book from reading list
-  document.querySelectorAll(".remove-from-reading-list").forEach((button) => {
-    button.addEventListener("click", function () {
-      const bookId = this.getAttribute("data-book-id");
-
-      fetch(`/reading/${bookId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
-            .value
-        },
-        body: JSON.stringify({ action: "toggle_bookmark" })
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "removed") {
-            // Remove the book's card from the DOM
-            const card = button.closest(".col-12");
-            card.parentNode.removeChild(card);
-            window.location.reload();
-          } else {
-            console.error("Unexpected response:", data);
-          }
-        })
-        .catch((error) => console.error("Error:", error));
+  // Set hidden input field for book ID on remove from reading list button
+  document
+    .querySelectorAll(".remove-from-reading-list-button")
+    .forEach((button) => {
+      button.addEventListener("click", function () {
+        const bookId = this.getAttribute("data-book-id");
+        document.getElementById("removeFromReadingListBookId").value = bookId;
+      });
     });
-  });
 
-  // Delete author
+  // Remove book from reading list
+  document
+    .querySelectorAll(".remove-from-reading-list-button-modal")
+    .forEach((button) => {
+      button.addEventListener("click", function () {
+        const bookId = document.getElementById(
+          "removeFromReadingListBookId"
+        ).value;
+
+        fetch(`/reading/${bookId}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken")
+          },
+          body: JSON.stringify({ action: "toggle_bookmark" })
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "removed") {
+              window.location.reload();
+            } else {
+              console.error("Unexpected response:", data);
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      });
+    });
 
   // Handle delete button clicks
   document
@@ -207,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
         comment: document.getElementById("editReviewComment").value
       };
 
-      fetch(`/reviews/${reviewId}/edit`, {
+      fetch(`/reviews/${reviewId}/edit/`, {
         method: "PATCH",
         headers: {
           "X-CSRFToken": getCookie("csrftoken"),
@@ -233,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function () {
       const reviewId = document.getElementById("deleteReviewId").value;
 
-      fetch(`/reviews/${reviewId}/delete`, {
+      fetch(`/reviews/${reviewId}/delete/`, {
         method: "DELETE",
         headers: {
           "X-CSRFToken": getCookie("csrftoken")

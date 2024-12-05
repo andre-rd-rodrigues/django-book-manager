@@ -41,7 +41,7 @@
           </div>
         <div class="col-md-2 d-flex align-items-end">
           <button type="submit" class="btn btn-primary me-2">Apply</button>
-          <a href="{% url 'books_page' %}" class="btn btn-secondary">Reset</a>
+          <a href="{% url 'reading_list_page' %}?status_filter=reading" class="btn btn-secondary">Reset</a>
         </div>
       </form>
     </div>
@@ -78,7 +78,7 @@
             </select>
             <div class="row g-2 mt-2">
               <div class="col-6">
-                <button type="button" class="btn btn-danger remove-from-reading-list w-100" data-book-id="{{ book.id }}">
+                <button type="button" class="btn btn-danger remove-from-reading-list-button w-100"  data-bs-toggle="modal" data-book-id="{{ book.id }}" data-bs-target="#removeFromReadingListModal">
                   Remove
                 </button>
               </div>
@@ -97,6 +97,26 @@
       <p class="text-center mt-5">Your reading list is empty.</p>
     </div>
   {% endfor %}
+</div>
+
+ <!-- Remove From Reading List Modal Confirmation -->
+ <div class="modal fade" id="removeFromReadingListModal" tabindex="-1" aria-labelledby="removeFromReadingListModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <input type="hidden" id="removeFromReadingListBookId" name="book_id" value="">
+        <h5 class="modal-title" id="removeFromReadingListModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to remove this book from your reading list?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger remove-from-reading-list-button-modal" data-book-id="{{ book.id }}">Remove</button>
+      </div>
+    </div>
+  </div>
 </div>
 
  <!-- Pagination -->

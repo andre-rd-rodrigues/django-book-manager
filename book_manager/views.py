@@ -29,7 +29,8 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            next_url = request.GET.get("next")
+            return redirect(next_url if next_url else "index")
         else:
             return render(request, "book_manager/login.html", {
                 "message": "Invalid username and/or password."
@@ -91,7 +92,6 @@ def books_page(request):
             book.in_reading_list = book.reading_lists.filter(user=request.user).exists()
     return render(request, 'book_manager/books.html', {'books': page_obj})
 
-@login_required
 def book_page(request, book_id):
     book = Book.objects.get(id=book_id)
     reviews = book.ratings.all().order_by('-created_at')
