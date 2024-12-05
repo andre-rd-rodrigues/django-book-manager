@@ -51,7 +51,7 @@
 
           {% if user == book.user %}
           <div class="mt-4">
-              <a href="{% url 'edit_book_page' book.id %}" class="btn btn-secondary">Edit Book</a>
+              <a href="{% url 'edit_book_page' book.id %}" class="btn btn-warning">Edit Book</a>
               <button class="btn btn-danger" data-book-id="{{ book.id }}" data-bs-toggle="modal" data-bs-target="#deleteModal">
                 <i class="fa fa-trash"></i>
               </button>
