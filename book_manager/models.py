@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Avg
 
 class Author(models.Model):
     name = models.CharField(max_length=200)
@@ -59,9 +60,9 @@ class Book(models.Model):
     
     @property
     def average_rating(self):
-        reviews = self.reviews.all()
-        if reviews:
-            return reviews.aggregate(Avg('rating'))['rating__avg']
+        ratings = self.ratings.all()
+        if ratings:
+            return ratings.aggregate(Avg('rating'))['rating__avg']
         return 0
 
 
@@ -102,22 +103,13 @@ class ReadingList(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.book.title} ({self.status})"
 
-class Review(models.Model):
-    """Model to represent reviews on books."""
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.book.title}"
-
 class Rating(models.Model):
     """Model to represent ratings on books."""
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="ratings")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+    comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title} ({self.rating})"

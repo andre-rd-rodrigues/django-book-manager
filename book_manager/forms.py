@@ -1,5 +1,5 @@
 from django import forms
-from .models import Book, Author
+from .models import Book, Author, Rating
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -51,3 +51,25 @@ class AuthorForm(forms.ModelForm):
         if Author.objects.filter(name__iexact=name).exclude(id=self.instance.id).exists():
             raise forms.ValidationError("An author with this name already exists.")
         return name
+
+class RatingForm(forms.ModelForm):
+    class Meta:
+        RATING_CHOICES =[
+            (5, '5 - Excellent'),
+            (4, '4 - Very Good'),
+            (3, '3 - Good'),
+            (2, '2 - Fair'),
+            (1, '1 - Poor'),
+        ]
+        model = Rating
+        fields = ['rating', 'comment']
+
+        labels = {
+            'rating': 'Rating',
+            'comment': 'Comment',
+        }
+
+        widgets = {
+            'rating': forms.Select(choices=RATING_CHOICES, attrs={'class': 'form-select'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter a comment'}),
+        }

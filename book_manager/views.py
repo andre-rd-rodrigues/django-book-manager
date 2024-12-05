@@ -7,10 +7,10 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.core.paginator import Paginator
-from .models import Book, Like, ReadingList, Author
-from .forms import BookForm, AuthorForm
+from .models import Book, Like, ReadingList, Author, Rating
+from .forms import BookForm, AuthorForm, RatingForm
 from django.contrib import messages
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Avg
 
 def index(request):
     best_sellers = Book.objects.all()[:3]
@@ -94,7 +94,16 @@ def books_page(request):
 @login_required
 def book_page(request, book_id):
     book = Book.objects.get(id=book_id)
-    return render(request, 'book_manager/book.html', {'book': book})
+    reviews = book.ratings.all()
+    form = RatingForm()
+    if request.method == 'POST':
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            form.instance.user = request.user
+            form.instance.book = book
+            form.save()
+            return redirect('book_page', book_id=book_id)
+    return render(request, 'book_manager/book.html', {'book': book, 'reviews': reviews, 'form': form})
 
 @login_required
 def add_book_page(request):

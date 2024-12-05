@@ -20,7 +20,7 @@
           
           <div class="mb-3">
               {% include "book_manager/_star_rating.html" with rating=book.average_rating %}
-              <small class="text-muted">({{ book.reviews.count }} reviews)</small>
+              <small class="text-muted">({{ reviews.count }} reviews)</small>
           </div>
           
           <div class="mb-3">
@@ -76,11 +76,11 @@
               </button>
           {% endif %}
         </div>
-          {% if book.reviews.all %}
-              {% for review in book.reviews.all %}
+          {% if reviews.all %}
+              {% for review in reviews.all %}
                   <div class="card mb-3">
                       <div class="card-body">
-                          {% include "book_manager/components/star_rating.html" with rating=review.rating %}
+                          {% include "book_manager/_star_rating.html" with rating=review.rating %}
                           <p class="mt-2">{{ review.comment }}</p>
                           <small class="text-muted">By {{ review.user.username }} on {{ review.created_at|date:"F j, Y" }}</small>
                       </div>
@@ -120,28 +120,10 @@
         <h5 class="modal-title" id="reviewModalLabel">Add Review</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form method="POST">
+      <form method="POST" action="{% url 'book_page' book.id %}" class='p-3'>
         {% csrf_token %}
-        <div class="modal-body">
-            <div class="mb-3">
-                <label for="rating" class="form-label">Rating</label>
-                <select class="form-select" name="rating" id="rating" required>
-                    <option value="5">5 - Excellent</option>
-                    <option value="4">4 - Very Good</option>
-                    <option value="3">3 - Good</option>
-                    <option value="2">2 - Fair</option>
-                    <option value="1">1 - Poor</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="comment" class="form-label">Comment</label>
-                <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Submit Review</button>
-        </div>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Submit Review</button>
       </form>
     </div>
   </div>

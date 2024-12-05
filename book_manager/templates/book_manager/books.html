@@ -36,12 +36,14 @@
   </div>
 </div>
 
+<!-- Books Cards -->
 <div class="row mt-5">
   {% for book in books %} 
     {% include "book_manager/_book_card.html" with book=book %} 
   {% endfor %}
 </div>
 
+<!-- Pagination -->
 <div class="text-center mb-5">
   <div class="btn-group" role="group">
     {% if books.has_previous %}

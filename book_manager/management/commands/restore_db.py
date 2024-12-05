@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 "author": author_objects["J.K. Rowling"],
                 "description": "The first book in the Harry Potter series introduces us to Harry, a young wizard, and his adventures at Hogwarts.",
                 "published_date": "1997-06-26",
-                "cover_image": "https://covers.openlibrary.org/b/id/7984916-L.jpg",
+                "cover_image": "https://cdn.europosters.eu/image/750/telas-harry-potter-philosopher-s-stone-book-cover-i214926.jpg",
                 "genre": "Fantasy",
             },
             {
