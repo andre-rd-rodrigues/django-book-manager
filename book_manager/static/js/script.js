@@ -167,25 +167,84 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-  // Handle delete action
-  document.querySelectorAll(".delete-author-button").forEach((button) => {
+  // Edit review
+  document.querySelectorAll(".edit-review-btn").forEach((button) => {
     button.addEventListener("click", function () {
-      const authorId = this.getAttribute("data-author-id");
+      // Get review details from data attributes
+      const reviewId = this.getAttribute("data-review-id");
+      const reviewComment = this.getAttribute("data-review-comment");
+      const reviewRating = this.getAttribute("data-review-rating");
 
-      fetch(`/authors/${authorId}/delete`, {
+      // Set the form action dynamically
+      const editForm = document.getElementById("editReviewForm");
+      editForm.action = `/reviews/${reviewId}/edit/`;
+
+      // Populate the modal fields
+      document.getElementById("editReviewComment").value = reviewComment;
+      document.getElementById("editReviewRating").value = reviewRating;
+
+      // Set the hidden input field for review ID
+      document.getElementById("editReviewId").value = reviewId;
+    });
+  });
+
+  // Set the hidden input field for review ID
+  document.querySelectorAll(".delete-review-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      const reviewId = this.getAttribute("data-review-id");
+      document.getElementById("deleteReviewId").value = reviewId;
+    });
+  });
+
+  // Handle update review
+  document
+    .getElementById("editReviewForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const reviewId = document.getElementById("editReviewId").value;
+      const formData = {
+        rating: document.getElementById("editReviewRating").value,
+        comment: document.getElementById("editReviewComment").value
+      };
+
+      fetch(`/reviews/${reviewId}/edit`, {
+        method: "PATCH",
+        headers: {
+          "X-CSRFToken": getCookie("csrftoken"),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to update review");
+          }
+        })
+        .then((data) => {
+          window.location.reload();
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+
+  // Delete review
+  document.querySelectorAll(".delete-review-btn-modal").forEach((button) => {
+    button.addEventListener("click", function () {
+      const reviewId = document.getElementById("deleteReviewId").value;
+
+      fetch(`/reviews/${reviewId}/delete`, {
         method: "DELETE",
         headers: {
           "X-CSRFToken": getCookie("csrftoken")
         }
-      })
-        .then((response) => {
-          if (response.ok) {
-            window.location.reload();
-          } else {
-            console.error("Error deleting author");
-          }
-        })
-        .catch((error) => console.error("Error:", error));
+      }).then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          console.error("Error deleting review");
+        }
+      });
     });
   });
 

@@ -292,3 +292,22 @@ def manage_reading_list(request, book_id):
             return JsonResponse({"status": status})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Rating, id=review_id)
+    review.delete()
+    messages.success(request, 'Review deleted successfully!')
+    return redirect('book_page', book_id=review.book.id)
+
+@login_required
+def edit_review(request, review_id):
+    review = get_object_or_404(Rating, id=review_id, user=request.user)
+    if request.method == 'PATCH':
+        data = json.loads(request.body)
+        review.rating = data.get("rating")
+        review.comment = data.get("comment")
+        review.save()
+        messages.success(request, 'Review updated successfully!')
+        return JsonResponse({"rating": review.rating, "comment": review.comment})
+    return JsonResponse({"error": "Invalid request method"}, status=400)

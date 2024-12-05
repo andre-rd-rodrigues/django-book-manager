@@ -18,4 +18,6 @@ urlpatterns = [
     path('authors/new', views.add_author_page, name='add_author_page'),
     path('authors/<int:author_id>/edit', views.edit_author_page, name='edit_author_page'),
     path('authors/<int:author_id>/delete', views.delete_author, name='delete_author'),
+    path('reviews/<int:review_id>/edit', views.edit_review, name='edit_review'),
+    path('reviews/<int:review_id>/delete', views.delete_review, name='delete_review'),
 ]

@@ -60,7 +60,7 @@
             {% if user.is_authenticated %}
               <div class="navbar-text me-3">Welcome {{ user.username }}!</div>
               <div class="navbar-text me-3">
-                <a class="btn btn-success" href="/books/new" style='color:white'>Add Book</a>
+                <a class="btn btn-primary" href="/books/new" style='color:white'>Add Book</a>
               </div>
               <div><a class="btn btn-secondary me-2" href="{% url 'logout' %}">Logout</a></div>
             {% else %}
