@@ -191,20 +191,48 @@ python manage.py runserver
 ## **Features in Detail**
 
 1. **User Authentication**:
-   - Users can create accounts, log in, and log out.
-   - User-specific reading lists and reviews are tied to their accounts.
+   - Users can create accounts, log in, and log out securely.
+   - Authentication is required to perform certain actions like adding books, authors, and reviews or access the reading list.
+   - User-specific data, such as reading lists is personalized for each account.
 2. **Book Management**:
-   - Books are displayed with details like title, author, genre, and description.
-   - Relationships between books and authors are dynamically managed using Django models.
+   - Users can browse and view detailed information about books, including title, author, description, genre, and publication date.
+   - The application supports adding, editing, and deleting books.
+   - Books can be sorted by title, author, date added, likes, or average rating, with ascending/descending toggle options.
+   - Books can also be filtered by genre or searched dynamically.
 3. **Reading List**:
-   - Users can mark books as "to read" or "read."
-   - A dedicated page displays the user’s personalized reading list.
-4. **Reviews**:
-   - Users can write and edit reviews for books.
-   - Average ratings are calculated and displayed dynamically.
-5. **Search and Filter**:
-   - A real-time search bar helps users find books by title, author, or genre.
-   - Filter options enable browsing by genre or author.
+   - Users can add books to a personalized reading list with statuses: "Reading," or "Finished."
+   - The reading list is easily accessible and allows users to update the status of books directly.
+   - Sorting and filtering options are available, similar to the main book management features.
+   - An intuitive UI shows the current status of each book, with options to update or remove books from the reading list seamlessly.
+4. **Author Management**:
+   - Users can view a list of authors with their biographies.
+   - Admins or the user who created an author can edit or delete them.
+   - Authors can be sorted by name, date created, with ascending/descending toggle options.
+   - A search feature allows users to quickly find specific authors.
+5. **Reviews**:
+   - Users can rate books using a 5-star system and leave comments.
+   - Reviews can be added, edited, or deleted, with interactive modals for these operations.
+   - The average rating for each book is dynamically calculated and displayed.
+   - Pagination is available for reviews, ensuring a user-friendly experience even for books with many reviews.
+6. **Interactive Modals**:
+   - Modals are used for tasks like confirming deletions and editing reviews, enhancing the user experience.
+   - Review modals dynamically pre-fill form fields with existing data, allowing for seamless updates.
+   - JavaScript handlers manage the opening and closing of modals after form submission.
+7. **Search and Filter**:
+   - Real-time search across books, authors, and genres helps users find what they’re looking for quickly.
+   - Advanced filtering options enable users to narrow down results by genre, author, or status (for the reading list).
+   - Combined with sorting features, users can organize and locate content effortlessly.
+8. **Responsive Design**:
+   - The application is mobile-friendly, ensuring usability on all devices.
+   - Layouts dynamically adjust for smaller screens while maintaining functionality and aesthetics.
+9. **Administrative Features**:
+   - A default admin account is created during setup, allowing the teacher or evaluator to test all features easily.
+   - Admins have additional privileges, such as editing or deleting any content, including books, authors, and reviews.
+10. **Real-Time Updates**:
+    - JavaScript and Django integration ensure a responsive experience:
+      - Adding or removing books from the reading list updates the UI immediately.
+      - Review edits and deletions are reflected without needing to reload the page.
+    - Server-side logic guarantees data integrity and consistency across all views.
 
 ---
 
