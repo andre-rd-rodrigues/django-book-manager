@@ -122,7 +122,10 @@ def edit_book_page(request, book_id):
 
 @login_required
 def reading_list_page(request):
+    status = request.GET.get('status')
     reading_list_entries = ReadingList.objects.filter(user=request.user)
+    if status:
+        reading_list_entries = reading_list_entries.filter(status=status)
     paginator = Paginator(reading_list_entries, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
