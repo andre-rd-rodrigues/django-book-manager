@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 from .models import Book, Like, ReadingList, Author
 from .forms import BookForm, AuthorForm
 from django.contrib import messages
+from django.db.models import Q, Count
 
 def index(request):
     best_sellers = Book.objects.all()[:3]
@@ -68,6 +69,16 @@ def register(request):
 
 def books_page(request):
     books = Book.objects.all()
+    search = request.GET.get('search')
+    order_by = request.GET.get('order_by')
+    order_direction = request.GET.get('order_direction')
+    if search:
+        books = books.filter(Q(title__icontains=search) | Q(author__name__icontains=search))
+    if order_by:
+        if order_by == 'likes':
+            books = books.annotate(likes_count=Count('likes')).order_by('-likes_count' if order_direction == 'desc' else 'likes_count')
+        else:
+            books = books.order_by(order_by if order_direction == 'asc' else f'-{order_by}')
     paginator = Paginator(books, 6)  # Show 5 books per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
