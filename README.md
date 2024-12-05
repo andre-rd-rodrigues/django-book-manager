@@ -1,12 +1,12 @@
 # 📚 **Book Manager**
 
-## **Overview**
+## 🔍 **Overview**
 
 Book Manager is a CRUD web application designed to help users manage their personal book collections, track their reading lists, and write reviews. It enables users to browse books, authors, and genres, while also providing a user-friendly platform to manage their reading habits. The app is built using Django for the backend and integrates a responsive front-end to ensure a seamless user experience.
 
 ---
 
-## **Distinctiveness and Complexity**
+## 🎯 **Distinctiveness and Complexity**
 
 ### **Distinctiveness**
 
@@ -36,7 +36,7 @@ Book Manager satisfies the complexity requirement by:
 
 ---
 
-## **Features**
+## ⭐ **Features**
 
 ### Core Features
 
@@ -62,7 +62,7 @@ Book Manager satisfies the complexity requirement by:
 
 ---
 
-## **File Descriptions**
+## 📁 **File Descriptions**
 
 ### Main Project Files
 
@@ -117,7 +117,7 @@ Book Manager satisfies the complexity requirement by:
 
 ---
 
-## **How to Run the Application**
+## 🚀 **How to Run the Application**
 
 ### Option 1: Using Docker Compose (Recommended)
 
@@ -188,7 +188,7 @@ python manage.py runserver
 
 ---
 
-## **Features in Detail**
+## 📋 **Features in Detail**
 
 1. **User Authentication**:
    - Users can create accounts, log in, and log out securely.
@@ -236,7 +236,7 @@ python manage.py runserver
 
 ---
 
-## **Additional Information**
+## ℹ️ **Additional Information**
 
 - **Dependencies**: The app uses the following major packages:
 
@@ -251,7 +251,7 @@ python manage.py runserver
 
 ---
 
-## **Acknowledgments**
+## 🙏 **Acknowledgments**
 
 - The design and structure of the project draw upon lessons from CS50’s Web Programming course.
 - Icons and design assets (if used) are sourced from free resources.
