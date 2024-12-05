@@ -7,7 +7,7 @@
   <div class="card mb-4">
     <div class="card-body">
       <form method="get" class="row g-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="search" class="form-label">Search Books</label>
           <input type="search" class="form-control" id="search" name="search" 
                  placeholder="Search by title or author..." value="{{ request.GET.search }}">
@@ -24,22 +24,38 @@
             <option value="status" {% if request.GET.order_by == 'status' %}selected{% endif %}>Status</option>
           </select>
         </div>
-        <div class="col-md-2">
-          <label for="order_direction" class="form-label">Order Direction</label>
-          <select class="form-select" id="order_direction" name="order_direction">
-            <option value="asc" {% if request.GET.order_direction == 'asc' %}selected{% endif %}>Ascending</option>
-            <option value="desc" {% if request.GET.order_direction == 'desc' %}selected{% endif %}>Descending</option>
+
+        <!-- Genre Filter -->
+        <div class="col-md-3">
+          <label for="genre" class="form-label">Genre</label>
+          <select class="form-select" id="genre" name="genre">
+            <option value="">Select...</option>
+            {% for genre in genres %}
+              <option value="{{ genre }}" {% if request.GET.genre == genre %}selected{% endif %}>{{ genre }}</option>
+            {% endfor %}
           </select>
         </div>
-          <!-- Add this new status filter -->
-          <div class="col-md-2">
-            <label for="status_filter" class="form-label">Filter by Status</label>
+
+        <!-- Status Filter -->
+        <div class="col-md-2">
+          <label for="status_filter" class="form-label">Filter by Status</label>
             <select class="form-select" id="status_filter" name="status_filter">
               <option value="">All</option>
               <option value="reading" {% if request.GET.status_filter == 'reading' %}selected{% endif %}>Reading</option>
               <option value="finished" {% if request.GET.status_filter == 'finished' %}selected{% endif %}>Finished</option>
             </select>
           </div>
+
+        <!-- Order Direction -->
+        <div class="col-md-2">
+          <label for="order_direction" class="form-label">Order Direction</label>
+          <select class="form-select" id="order_direction" name="order_direction">
+              <option value="asc" {% if request.GET.order_direction == 'asc' %}selected{% endif %}>Ascending</option>
+              <option value="desc" {% if request.GET.order_direction == 'desc' %}selected{% endif %}>Descending</option>
+          </select>
+        </div>
+
+        <!-- Apply and Reset Buttons -->
         <div class="col-md-2 d-flex align-items-end">
           <button type="submit" class="btn btn-primary me-2">Apply</button>
           <a href="{% url 'reading_list_page' %}?status_filter=reading" class="btn btn-secondary">Reset</a>

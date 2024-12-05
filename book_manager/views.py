@@ -70,9 +70,13 @@ def register(request):
 
 def books_page(request):
     books = Book.objects.all()
+    genres = Book.objects.values_list('genre', flat=True).distinct()
+
     search = request.GET.get('search')
     order_by = request.GET.get('order_by')
     order_direction = request.GET.get('order_direction')
+    genre = request.GET.get('genre')
+
     if search:
         books = books.filter(Q(title__icontains=search) | Q(author__name__icontains=search))
     if order_by:
@@ -82,6 +86,8 @@ def books_page(request):
             books = books.annotate(reviews_count=Count('ratings')).order_by('-reviews_count' if order_direction == 'desc' else 'reviews_count')
         else:
             books = books.order_by(order_by if order_direction == 'asc' else f'-{order_by}')
+    if genre:
+        books = books.filter(genre=genre)
     paginator = Paginator(books, 6)  # Show 5 books per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -92,7 +98,7 @@ def books_page(request):
             book.is_liked_by_user = book.is_liked(request.user)
             book.status = book.status(request.user)
             book.in_reading_list = book.reading_lists.filter(user=request.user).exists()
-    return render(request, 'book_manager/books.html', {'books': page_obj})
+    return render(request, 'book_manager/books.html', {'books': page_obj, 'genres': genres})
 
 def book_page(request, book_id):
     book = Book.objects.get(id=book_id)
@@ -149,11 +155,16 @@ def edit_book_page(request, book_id):
 
 @login_required
 def reading_list_page(request):
+    genres = Book.objects.filter(reading_lists__user=request.user).values_list('genre', flat=True).distinct()
+    reading_list_entries = ReadingList.objects.filter(user=request.user)
+
     search = request.GET.get('search')
     order_by = request.GET.get('order_by')
     order_direction = request.GET.get('order_direction')    
     status_filter = request.GET.get('status_filter')
-    reading_list_entries = ReadingList.objects.filter(user=request.user)
+    genre = request.GET.get('genre')
+
+    
     if search:
         reading_list_entries = reading_list_entries.filter(Q(book__title__icontains=search) | Q(book__author__name__icontains=search))
     if order_by:
@@ -163,6 +174,10 @@ def reading_list_page(request):
             reading_list_entries = reading_list_entries.order_by(order_by if order_direction == 'asc' else f'-{order_by}')
     if status_filter:
         reading_list_entries = reading_list_entries.filter(status=status_filter)
+   
+    if genre:
+        reading_list_entries = reading_list_entries.filter(book__genre=genre)
+
     paginator = Paginator(reading_list_entries, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -175,7 +190,7 @@ def reading_list_page(request):
         book.in_reading_list = True
         books_with_status.append(book)
     
-    return render(request, 'book_manager/reading_list.html', {'books': books_with_status, 'page_obj': page_obj})
+    return render(request, 'book_manager/reading_list.html', {'books': books_with_status, 'page_obj': page_obj, 'genres': genres})
 
 def authors_page(request):
     authors = Author.objects.all()

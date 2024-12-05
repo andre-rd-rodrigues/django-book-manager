@@ -25,7 +25,7 @@ Book Manager satisfies the complexity requirement by:
 2. Incorporating user authentication and permissions to manage personalized reading lists.
 3. Leveraging responsive design principles to create a mobile-friendly interface.
 4. Implementing comprehensive filtering and ordering systems:
-   - Books can be ordered by title, author, date added, and likes count
+   - Books can be ordered by title, author, date added, ratings and likes count
    - Reading lists include additional filtering by book reading status
    - Authors can be filtered by search and ordered by name and creation date
    - All listings support ascending/descending order direction
