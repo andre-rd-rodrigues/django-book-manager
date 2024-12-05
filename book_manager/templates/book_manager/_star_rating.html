@@ -1,0 +1,10 @@
+<div class="star-rating">
+  {% for i in "12345" %}
+      {% if forloop.counter <= rating %}
+          <i class="fas fa-star text-warning"></i>
+      {% else %}
+          <i class="far fa-star text-warning"></i>
+      {% endif %}
+  {% endfor %}
+  <span class="ms-2 text-muted">({{ rating|floatformat:1 }})</span>
+</div>
