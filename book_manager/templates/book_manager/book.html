@@ -113,6 +113,7 @@
       </div>
 
       <!-- Pagination -->
+      {% if reviews %}
       <div class="text-center mt-3 mb-5">
         <div class="btn-group" role="group">
           {% if reviews.has_previous %}
@@ -128,6 +129,7 @@
           {% endif %}
         </div>
       </div>
+      {% endif %}
   </div>
 </div>
 
