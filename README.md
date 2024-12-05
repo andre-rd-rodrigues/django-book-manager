@@ -10,20 +10,25 @@ Book Manager is a web application designed to help users manage their personal b
 
 ### **Distinctiveness**
 
-Book Manager is distinct from other projects in CS50’s Web Programming course because:
+Book Manager is distinct from other projects in CS50's Web Programming course because:
 
 1. It is not an e-commerce platform or a social network.
-2. It focuses on personal book management, including features like creating a reading list, browsing by genres or authors, and managing book reviews.
+2. It focuses on personal book management, including features like creating a reading list, adding and editing books and authors, browsing books by genres or authors, and managing book reviews.
 3. The application supports dynamic, real-time updates using Django models and templates for seamless user interaction.
+4. It utilizes Docker containerization for simplified deployment and testing.
 
 ### **Complexity**
 
 Book Manager satisfies the complexity requirement by:
 
-1. Utilizing Django’s relational database to model relationships between books, authors, users, and reviews.
+1. Utilizing Django’s relational database to model relationships between books, authors, users, likes, and reviews.
 2. Incorporating user authentication and permissions to manage personalized reading lists.
 3. Leveraging responsive design principles to create a mobile-friendly interface.
-4. Employing advanced URL routing and filtering to enable dynamic search and browsing by authors, genres, and books.
+4. Implementing comprehensive filtering and ordering systems:
+   - Books can be ordered by title, author, date added, and likes count
+   - Reading lists include additional filtering by book reading status
+   - Authors can be filtered by search and ordered by name and creation date
+   - All listings support ascending/descending order direction
 
 ---
 
@@ -32,10 +37,20 @@ Book Manager satisfies the complexity requirement by:
 ### Core Features
 
 - **User Authentication**: Users can sign up, log in, and manage their accounts.
-- **Book Management**: Users can browse books, view detailed information, and explore by genres or authors.
-- **Reading List**: Each user has a personalized reading list to track books they wish to read or have read.
+- **Book Management**:
+  - Browse books, view detailed information, and explore by genres or authors
+  - Order books by title, author, date added, or number of likes
+  - Toggle ascending/descending order
+  - Filter using the search functionality
+- **Reading List**:
+  - Personalized reading list with book status tracking
+  - Same ordering options as book management
+  - Additional filtering by reading status (to read/read)
+- **Author Management**:
+  - Search functionality for finding specific authors
+  - Order by author name or creation date
+  - Toggle ascending/descending order
 - **Reviews**: Users can rate and review books, with an average rating displayed for each book.
-- **Search and Filter**: A dynamic search bar allows users to find books by title, author, or genre.
 - **Responsive Design**: The application is mobile-friendly, ensuring usability across devices.
 
 ### Optional Features
@@ -76,37 +91,56 @@ Book Manager satisfies the complexity requirement by:
 
 ## **How to Run the Application**
 
+### Option 1: Using Docker Compose (Recommended)
+
 1. **Clone the Repository**:
 
-```jsx
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+```bash
+git clone https://github.com/andre-rd-rodrigues/django-book-manager
+cd django-book-manager
 ```
 
-1. **Set Up the Virtual Environment**:
+2. **Run with Docker Compose**:
 
-```jsx
+```bash
+docker compose up
+```
+
+The application will be available at `http://localhost:8000`
+
+### Option 2: Manual Setup
+
+1. **Clone the Repository**:
+
+```bash
+git clone https://github.com/andre-rd-rodrigues/django-book-manager
+cd django-book-manager
+```
+
+2. **Set Up the Virtual Environment**:
+
+```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-1. **Install Dependencies**:
+3. **Install Dependencies**:
 
-```jsx
+```bash
 pip install -r requirements.txt
 ```
 
-1. **Apply Migrations**:
+4. **Apply Migrations**:
 
-```jsx
-python [manage.py](http://manage.py/) makemigrations
-python [manage.py](http://manage.py/) migrate
+```bash
+python manage.py makemigrations
+python manage.py migrate
 ```
 
-1. **Run the Server**:
+5. **Run the Server**:
 
-```jsx
-python [manage.py](http://manage.py/) runserver
+```bash
+python manage.py runserver
 ```
 
 ---
