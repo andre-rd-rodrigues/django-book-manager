@@ -19,6 +19,7 @@
           <option value="author" {% if request.GET.order_by == 'author' %}selected{% endif %}>Author</option>
           <option value="created_at" {% if request.GET.order_by == 'created_at' %}selected{% endif %}>Date Added</option>
           <option value="likes" {% if request.GET.order_by == 'likes' %}selected{% endif %}>Likes</option>
+          <option value="reviews" {% if request.GET.order_by == 'reviews' %}selected{% endif %}>Reviews</option>
         </select>
       </div>
       <div class="col-md-3">

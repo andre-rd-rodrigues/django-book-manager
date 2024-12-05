@@ -78,6 +78,8 @@ def books_page(request):
     if order_by:
         if order_by == 'likes':
             books = books.annotate(likes_count=Count('likes')).order_by('-likes_count' if order_direction == 'desc' else 'likes_count')
+        elif order_by == 'reviews':
+            books = books.annotate(reviews_count=Count('ratings')).order_by('-reviews_count' if order_direction == 'desc' else 'reviews_count')
         else:
             books = books.order_by(order_by if order_direction == 'asc' else f'-{order_by}')
     paginator = Paginator(books, 6)  # Show 5 books per page
@@ -155,7 +157,10 @@ def reading_list_page(request):
     if search:
         reading_list_entries = reading_list_entries.filter(Q(book__title__icontains=search) | Q(book__author__name__icontains=search))
     if order_by:
-        reading_list_entries = reading_list_entries.order_by(order_by if order_direction == 'asc' else f'-{order_by}')
+        if order_by == 'reviews':
+            reading_list_entries = reading_list_entries.annotate(reviews_count=Count('book__ratings')).order_by('-reviews_count' if order_direction == 'desc' else 'reviews_count')
+        else:
+            reading_list_entries = reading_list_entries.order_by(order_by if order_direction == 'asc' else f'-{order_by}')
     if status_filter:
         reading_list_entries = reading_list_entries.filter(status=status_filter)
     paginator = Paginator(reading_list_entries, 6)

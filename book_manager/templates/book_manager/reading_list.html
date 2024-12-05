@@ -20,6 +20,7 @@
             <option value="author" {% if request.GET.order_by == 'author' %}selected{% endif %}>Author</option>
             <option value="added_at" {% if request.GET.order_by == 'added_at' %}selected{% endif %}>Date Added</option>
             <option value="likes" {% if request.GET.order_by == 'likes' %}selected{% endif %}>Likes</option>
+            <option value="reviews" {% if request.GET.order_by == 'reviews' %}selected{% endif %}>Reviews</option>
             <option value="status" {% if request.GET.order_by == 'status' %}selected{% endif %}>Status</option>
           </select>
         </div>
@@ -62,6 +63,10 @@
           {% if book.author %}
             <p class="card-text text-muted">by {{ book.author }}</p>
           {% endif %}
+          <div class="mb-3">
+            {% include "book_manager/_star_rating.html" with rating=book.average_rating %}
+            <small class="text-muted">({{ book.ratings.count }} reviews)</small>
+          </div>
 
           <!-- Dropdown for status management -->
           <form action="{% url 'manage_reading_list' book.id %}" method="POST" class="mb-3 update-status-form">
