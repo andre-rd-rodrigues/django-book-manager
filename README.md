@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-Book Manager is a web application designed to help users manage their personal book collections, track their reading lists, and write reviews. It enables users to browse books, authors, and genres, while also providing a user-friendly platform to manage their reading habits. The app is built using Django for the backend and integrates a responsive front-end to ensure a seamless user experience.
+Book Manager is a CRUD web application designed to help users manage their personal book collections, track their reading lists, and write reviews. It enables users to browse books, authors, and genres, while also providing a user-friendly platform to manage their reading habits. The app is built using Django for the backend and integrates a responsive front-end to ensure a seamless user experience.
 
 ---
 
@@ -21,14 +21,18 @@ Book Manager is distinct from other projects in CS50's Web Programming course be
 
 Book Manager satisfies the complexity requirement by:
 
-1. Utilizing Django’s relational database to model relationships between books, authors, users, likes, and reviews.
-2. Incorporating user authentication and permissions to manage personalized reading lists.
+1. Utilizing Django’s relational database to model relationships between books, authors, users, likes, reading list and reviews.
+2. Incorporating user authentication and permissions to manage personalized experience.
 3. Leveraging responsive design principles to create a mobile-friendly interface.
 4. Implementing comprehensive filtering and ordering systems:
-   - Books can be ordered by title, author, date added, ratings and likes count
-   - Reading lists include additional filtering by book reading status
-   - Authors can be filtered by search and ordered by name and creation date
-   - All listings support ascending/descending order direction
+   - Books can be ordered by title, genre, author, date added, ratings and likes count;
+   - Reading lists include additional filtering by book reading status;
+   - Authors can be filtered by search and ordered by name and by creation user;
+   - All listings support ascending/descending order direction.
+5. Implementing interactive modals using JavaScript and Django integration:
+   - Confirmation modals for all deletion operations to prevent accidental deletions
+   - Edit and delete review operations are handled through modals for improved user experience
+   - Custom JavaScript handlers manage modal interactions and form submissions
 
 ---
 
@@ -36,27 +40,25 @@ Book Manager satisfies the complexity requirement by:
 
 ### Core Features
 
-- **User Authentication**: Users can sign up, log in, and manage their accounts.
+- **User Authentication**: Users can sign up and log in.
 - **Book Management**:
-  - Browse books, view detailed information, and explore by genres or authors
+  - Browse and manage books, view detailed information
+  - Add, edit and delete new books
+  - Search functionality for finding specific books
   - Order books by title, author, date added, or number of likes
   - Toggle ascending/descending order
   - Filter using the search functionality
 - **Reading List**:
   - Personalized reading list with book status tracking
-  - Same ordering options as book management
-  - Additional filtering by reading status (to read/read)
+  - Same ordering and search options as book management
+  - Additional filtering by reading status
 - **Author Management**:
+  - Add, edit and delete new authors
   - Search functionality for finding specific authors
   - Order by author name or creation date
   - Toggle ascending/descending order
 - **Reviews**: Users can rate and review books, with an average rating displayed for each book.
 - **Responsive Design**: The application is mobile-friendly, ensuring usability across devices.
-
-### Optional Features
-
-- **Trending Books**: Highlights books with the most recent reviews.
-- **User Stats**: Displays statistics like the number of books read and average ratings given by the user.
 
 ---
 
@@ -64,28 +66,54 @@ Book Manager satisfies the complexity requirement by:
 
 ### Main Project Files
 
-- **`manage.py`**: Django’s command-line utility for administrative tasks.
-- **`settings.py`**: Contains the global configuration for the project.
-- **`urls.py`**: Defines URL routing for the project.
-- **`db.sqlite3`**: The SQLite database file storing all application data.
+- **`manage.py`**: Django's command-line utility for administrative tasks
+- **`requirements.txt`**: Lists all Python dependencies for the project
+- **`docker-compose.yml`**: Docker Compose configuration for containerization
+- **`dockerfile`**: Docker configuration for building the application container
+- **`entrypoint.sh`**: Shell script for Docker container initialization
 
-### App Files (`book_manager`)
+### App Files (`book_manager/`)
 
-- **`models.py`**: Defines database models for books, authors, reviews, and users.
-- **`views.py`**: Contains view functions to handle HTTP requests and return responses.
-- **`urls.py`**: Maps URLs to view functions for the app.
-- **`templates/book_manager/`**:
-  - `base.html`: The base layout for all pages.
-  - `index.html`: The homepage template.
-  - `book_list.html`: Displays a list of books.
-  - `book_detail.html`: Shows detailed information for a specific book.
-- **`static/`**:
-  - `styles.css`: Custom CSS for styling the app.
+- **`models.py`**: Defines database models for books, authors, reviews, and users
+- **`views.py`**: Contains view functions to handle HTTP requests and return responses
+- **`urls.py`**: Maps URLs to view functions for the app
+- **`forms.py`**: Contains form definitions for data input handling
+
+#### Templates (`book_manager/templates/book_manager/`)
+
+- **`layout.html`**: Base template for all pages
+- **`index.html`**: Homepage template
+- **`books.html`**: Displays list of books
+- **`book.html`**: Shows detailed information for a specific book
+- **`book_card.html`**: Reusable component for book display
+- **`add_book.html`**: Form template for adding new books
+- **`edit_book.html`**: Form template for editing books
+- **`authors.html`**: Displays list of authors
+- **`add_author.html`**: Form template for adding new authors
+- **`edit_author.html`**: Form template for editing authors
+- **`reading_list.html`**: Template for user's reading list
+- **`login.html`**: Login page template
+- **`register.html`**: Registration page template
+- **`_star_rating.html`**: Reusable component for star ratings
+
+#### Static Files (`book_manager/static/`)
+
+- **`css/`**: Contains CSS stylesheets
+- **`images/`**: Stores image assets
+- **`js/script.js`**: JavaScript code for client-side functionality
+
+### Project Configuration (`myproject/`)
+
+- **`settings.py`**: Project settings and configuration
+- **`urls.py`**: Project-level URL configuration
+- **`wsgi.py`**: WSGI application configuration
+- **`asgi.py`**: ASGI application configuration
 
 ### Additional Files
 
-- **`.gitignore`**: Specifies files to be ignored by Git.
-- **`requirements.txt`**: Lists all Python dependencies for the project.
+- **`.gitignore`**: Specifies which files Git should ignore
+- **`.prettierignore`**: Configuration for Prettier code formatter
+- **`Makefile`**: Contains commands for project management
 
 ---
 
@@ -183,9 +211,12 @@ python manage.py runserver
 ## **Additional Information**
 
 - **Dependencies**: The app uses the following major packages:
+
   - Django
   - SQLite (default database)
-  - Bootstrap (optional, for responsive design)
+  - Font Awesome
+  - Halfmoon CSS
+
 - **Development Tools**:
   - VS Code for editing.
   - Git for version control.
