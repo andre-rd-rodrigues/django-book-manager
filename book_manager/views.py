@@ -94,8 +94,13 @@ def books_page(request):
 @login_required
 def book_page(request, book_id):
     book = Book.objects.get(id=book_id)
-    reviews = book.ratings.all()
+    reviews = book.ratings.all().order_by('-created_at')
     form = RatingForm()
+
+    paginator = Paginator(reviews, 3)
+    page_number = request.GET.get('page')
+    reviews_page_obj = paginator.get_page(page_number)
+  
     if request.method == 'POST':
         form = RatingForm(request.POST)
         if form.is_valid():
@@ -103,7 +108,7 @@ def book_page(request, book_id):
             form.instance.book = book
             form.save()
             return redirect('book_page', book_id=book_id)
-    return render(request, 'book_manager/book.html', {'book': book, 'reviews': reviews, 'form': form})
+    return render(request, 'book_manager/book.html', {'book': book, 'reviews': reviews_page_obj, 'form': form})
 
 @login_required
 def add_book_page(request):

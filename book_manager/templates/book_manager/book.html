@@ -20,7 +20,7 @@
           
           <div class="mb-3">
               {% include "book_manager/_star_rating.html" with rating=book.average_rating %}
-              <small class="text-muted">({{ reviews.count }} reviews)</small>
+              <small class="text-muted">({{ book.ratings.count }} reviews)</small>
           </div>
           
           <div class="mb-3">
@@ -76,8 +76,8 @@
               </button>
           {% endif %}
         </div>
-          {% if reviews.all %}
-              {% for review in reviews.all %}
+          {% if reviews %}
+              {% for review in reviews %}
                   <div class="card mb-3">
                       <div class="card-body">
                           {% include "book_manager/_star_rating.html" with rating=review.rating %}
@@ -90,10 +90,27 @@
               <p class="text-muted">No reviews yet.</p>
           {% endif %}
       </div>
+
+      <!-- Pagination -->
+      <div class="text-center mt-3 mb-5">
+        <div class="btn-group" role="group">
+          {% if reviews.has_previous %}
+          <a href="?page={{ reviews.previous_page_number }}" class="btn btn-secondary">Previous</a>
+          {% endif %}
+
+          <button class="btn btn-secondary" disabled>
+            Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}
+          </button>
+
+          {% if reviews.has_next %}
+          <a href="?page={{ reviews.next_page_number }}" class="btn btn-secondary">Next</a>
+          {% endif %}
+        </div>
+      </div>
   </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
+<!-- Delete Book Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
