@@ -153,6 +153,13 @@ def reading_list_page(request):
 
 def authors_page(request):
     authors = Author.objects.all()
+    search = request.GET.get('search')
+    order_by = request.GET.get('order_by')
+    order_direction = request.GET.get('order_direction')
+    if search:
+        authors = authors.filter(Q(name__icontains=search) | Q(created_by__username__icontains=search))
+    if order_by:
+        authors = authors.order_by(order_by if order_direction == 'asc' else f'-{order_by}')
     paginator = Paginator(authors, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)  

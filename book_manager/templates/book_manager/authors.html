@@ -8,6 +8,38 @@
             <a href="{% url 'add_author_page' %}" class="btn btn-primary">Add Author</a>
         </div>
 
+        <!-- Filter Bar -->
+        <div class="card mb-4">
+            <div class="card-body">
+              <form method="get" class="row g-3">
+                <div class="col-md-4">
+                  <label for="search" class="form-label">Search Authors</label>
+                  <input type="search" class="form-control" id="search" name="search" 
+                         placeholder="Search by title or author..." value="{{ request.GET.search }}">
+                </div>
+                <div class="col-md-3">
+                  <label for="order_by" class="form-label">Order By</label>
+                  <select class="form-select" id="order_by" name="order_by">
+                    <option value="">Select...</option>
+                    <option value="name" {% if request.GET.order_by == 'name' %}selected{% endif %}>Name</option>
+                    <option value="created_by" {% if request.GET.order_by == 'created_by' %}selected{% endif %}>Created By</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="order_direction" class="form-label">Order Direction</label>
+                  <select class="form-select" id="order_direction" name="order_direction">
+                    <option value="asc" {% if request.GET.order_direction == 'asc' %}selected{% endif %}>Ascending</option>
+                    <option value="desc" {% if request.GET.order_direction == 'desc' %}selected{% endif %}>Descending</option>
+                  </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                  <button type="submit" class="btn btn-primary me-2">Apply</button>
+                  <a href="{% url 'authors_page' %}" class="btn btn-secondary">Reset</a>
+                </div>
+              </form>
+            </div>
+          </div>
+
         <div>
           {% if authors %}
               <div class="accordion" id="authorsAccordion">
@@ -59,7 +91,7 @@
     <div class="text-center mt-5">
       <div class="btn-group" role="group">
         {% if authors.has_previous %}
-        <a href="?page={{ authors.previous_page_number }}" class="btn btn-secondary"
+        <a href="?page={{ authors.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.order_by %}&order_by={{ request.GET.order_by }}{% endif %}&order_direction={{ request.GET.order_direction }}" class="btn btn-secondary"
           >Previous</a
         >
         {% endif %}
@@ -69,7 +101,7 @@
         </button>
     
         {% if authors.has_next %}
-        <a href="?page={{ authors.next_page_number }}" class="btn btn-secondary"
+        <a href="?page={{ authors.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.order_by %}&order_by={{ request.GET.order_by }}{% endif %}&order_direction={{ request.GET.order_direction }}" class="btn btn-secondary"
           >Next</a
         >
         {% endif %}
