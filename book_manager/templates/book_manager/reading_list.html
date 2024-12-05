@@ -2,22 +2,51 @@
 
 {% block body %}
 <h1 class="content-title">Reading List</h1>
-<!-- Filter Bar -->
-<div class="filter-bar mb-4">
-  <form method="GET" class="d-flex justify-content-center">
-    <div class="btn-group" role="group" aria-label="Status filter">
-      <a href="{% url 'reading_list_page' %}" class="btn btn-outline-primary {% if not request.GET.status %}active{% endif %}">
-        All
-      </a>
-      <a href="?status=reading" class="btn btn-outline-primary {% if request.GET.status == 'reading' %}active{% endif %}">
-        Reading
-      </a>
-      <a href="?status=finished" class="btn btn-outline-primary {% if request.GET.status == 'finished' %}active{% endif %}">
-        Finished
-      </a>
+
+  <!-- Filter Bar -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form method="get" class="row g-3">
+        <div class="col-md-4">
+          <label for="search" class="form-label">Search Books</label>
+          <input type="search" class="form-control" id="search" name="search" 
+                 placeholder="Search by title or author..." value="{{ request.GET.search }}">
+        </div>
+        <div class="col-md-2">
+          <label for="order_by" class="form-label">Order By</label>
+          <select class="form-select" id="order_by" name="order_by">
+            <option value="">Select...</option>
+            <option value="title" {% if request.GET.order_by == 'title' %}selected{% endif %}>Title</option>
+            <option value="author" {% if request.GET.order_by == 'author' %}selected{% endif %}>Author</option>
+            <option value="added_at" {% if request.GET.order_by == 'added_at' %}selected{% endif %}>Date Added</option>
+            <option value="likes" {% if request.GET.order_by == 'likes' %}selected{% endif %}>Likes</option>
+            <option value="status" {% if request.GET.order_by == 'status' %}selected{% endif %}>Status</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="order_direction" class="form-label">Order Direction</label>
+          <select class="form-select" id="order_direction" name="order_direction">
+            <option value="asc" {% if request.GET.order_direction == 'asc' %}selected{% endif %}>Ascending</option>
+            <option value="desc" {% if request.GET.order_direction == 'desc' %}selected{% endif %}>Descending</option>
+          </select>
+        </div>
+          <!-- Add this new status filter -->
+          <div class="col-md-2">
+            <label for="status_filter" class="form-label">Filter by Status</label>
+            <select class="form-select" id="status_filter" name="status_filter">
+              <option value="">All</option>
+              <option value="reading" {% if request.GET.status_filter == 'reading' %}selected{% endif %}>Reading</option>
+              <option value="finished" {% if request.GET.status_filter == 'finished' %}selected{% endif %}>Finished</option>
+            </select>
+          </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary me-2">Apply</button>
+          <a href="{% url 'books_page' %}" class="btn btn-secondary">Reset</a>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
+  </div>
+
 
 <!-- Reading List -->
 <div class="row mt-5 g-3">
@@ -74,7 +103,7 @@
  <div class="text-center mt-4">
   <div class="btn-group" role="group">
     {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary"
+    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.order_by %}&order_by={{ request.GET.order_by }}{% endif %}&order_direction={{ request.GET.order_direction }}&status_filter={{ request.GET.status_filter }}" class="btn btn-secondary"
       >Previous</a
     >
     {% endif %}
@@ -84,7 +113,7 @@
     </button>
 
     {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-secondary"
+    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.order_by %}&order_by={{ request.GET.order_by }}{% endif %}&order_direction={{ request.GET.order_direction }}&status_filter={{ request.GET.status_filter }}" class="btn btn-secondary"
       >Next</a
     >
     {% endif %}

@@ -133,10 +133,17 @@ def edit_book_page(request, book_id):
 
 @login_required
 def reading_list_page(request):
-    status = request.GET.get('status')
+    search = request.GET.get('search')
+    order_by = request.GET.get('order_by')
+    order_direction = request.GET.get('order_direction')    
+    status_filter = request.GET.get('status_filter')
     reading_list_entries = ReadingList.objects.filter(user=request.user)
-    if status:
-        reading_list_entries = reading_list_entries.filter(status=status)
+    if search:
+        reading_list_entries = reading_list_entries.filter(Q(book__title__icontains=search) | Q(book__author__name__icontains=search))
+    if order_by:
+        reading_list_entries = reading_list_entries.order_by(order_by if order_direction == 'asc' else f'-{order_by}')
+    if status_filter:
+        reading_list_entries = reading_list_entries.filter(status=status_filter)
     paginator = Paginator(reading_list_entries, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
