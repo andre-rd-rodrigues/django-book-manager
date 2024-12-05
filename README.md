@@ -102,11 +102,26 @@ cd django-book-manager
 
 2. **Run with Docker Compose**:
 
+To run the project using Docker Compose, follow these steps:
+
+1. Build the Docker image: Before starting the application, build the Docker image locally:
+
 ```bash
-docker compose up
+docker-compose build
 ```
 
-The application will be available at `http://localhost:8000`
+2. Start the application: Once the image is built, you can start the application:
+
+```bash
+docker-compose up
+```
+
+The application will be accessible at:
+
+- Frontend: http://localhost:8000
+- Admin Panel: http://localhost:8000/admin
+
+**Note:** A default admin account will be automatically created when running `restore-db`. For security purposes, please change the admin password after first login.
 
 ### Option 2: Manual Setup
 
