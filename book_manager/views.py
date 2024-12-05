@@ -12,7 +12,9 @@ from .forms import BookForm, AuthorForm
 from django.contrib import messages
 
 def index(request):
-    return render(request, "book_manager/index.html")
+    best_sellers = Book.objects.all()[:3]
+    recommended_to_you = Book.objects.order_by('?')[:3]
+    return render(request, "book_manager/index.html", {"best_sellers": best_sellers, "recommended_to_you": recommended_to_you})
 
 """ Authentication views """
 def login_view(request):
@@ -88,6 +90,7 @@ def add_book_page(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
         if form.is_valid():
+            form.instance.user = request.user
             form.save()
             messages.success(request, 'New book was added successfully!')
             return redirect('books_page')
@@ -206,6 +209,15 @@ def delete_book(request, book_id):
         return redirect('books_page')
     book.delete()
     return redirect('books_page')
+
+@login_required
+def delete_author(request, author_id):
+    author = get_object_or_404(Author, id=author_id)
+    if request.user != author.created_by:
+        messages.error(request, 'You can only delete authors that you created.')
+        return redirect('authors_page')
+    author.delete()
+    return redirect('authors_page')
 
 @login_required
 def manage_reading_list(request, book_id):

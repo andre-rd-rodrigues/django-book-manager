@@ -43,7 +43,19 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".delete-button").forEach((button) => {
     button.addEventListener("click", function () {
       const bookId = this.getAttribute("data-book-id");
-      deleteBook(bookId);
+
+      fetch(`/books/${bookId}/delete`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRFToken": getCookie("csrftoken")
+        }
+      }).then((response) => {
+        if (response.ok) {
+          window.location.href = "/"; // Redirect to home page after deletion
+        } else {
+          alert("Error deleting book");
+        }
+      });
     });
   });
 
@@ -135,20 +147,47 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  function deleteBook(bookId) {
-    fetch(`/books/${bookId}/delete`, {
-      method: "DELETE",
-      headers: {
-        "X-CSRFToken": getCookie("csrftoken")
-      }
-    }).then((response) => {
-      if (response.ok) {
-        window.location.href = "/"; // Redirect to home page after deletion
-      } else {
-        alert("Error deleting book");
-      }
+  // Delete author
+
+  // Handle delete button clicks
+  document
+    .querySelectorAll("[data-bs-target='#deleteModal']")
+    .forEach((button) => {
+      button.addEventListener("click", function () {
+        // Get the author ID from the clicked button
+        const authorId = this.getAttribute("data-author-id");
+
+        // Set the author ID in the modal's delete button
+        const deleteButton = document.querySelector(".delete-author-button");
+        deleteButton.setAttribute("data-author-id", authorId);
+
+        // Optionally update the modal's body or title with author-specific information
+        const modalBody = document.querySelector("#deleteModal .modal-body");
+        modalBody.textContent = `Are you sure you want to delete this author? This will delete all books associated with them.`;
+      });
     });
-  }
+
+  // Handle delete action
+  document.querySelectorAll(".delete-author-button").forEach((button) => {
+    button.addEventListener("click", function () {
+      const authorId = this.getAttribute("data-author-id");
+
+      fetch(`/authors/${authorId}/delete`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRFToken": getCookie("csrftoken")
+        }
+      })
+        .then((response) => {
+          if (response.ok) {
+            window.location.reload();
+          } else {
+            console.error("Error deleting author");
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+  });
 
   function getCookie(name) {
     let cookieValue = null;

@@ -27,6 +27,8 @@ class Command(BaseCommand):
             "Harper Lee": "Author of To Kill a Mockingbird.",
             "F. Scott Fitzgerald": "Author of The Great Gatsby.",
             "J.R.R. Tolkien": "Author of The Lord of the Rings.",
+            "Jane Austen": "Author of Pride and Prejudice and other classic novels of manners.",
+            "Miguel de Cervantes": "Author of Don Quixote, considered the first modern novel.",
         }
 
         author_objects = {}
@@ -48,7 +50,7 @@ class Command(BaseCommand):
                 "author": author_objects["George Orwell"],
                 "description": "A dystopian novel set in a totalitarian society ruled by Big Brother.",
                 "published_date": "1949-06-08",
-                "cover_image": "https://covers.openlibrary.org/b/id/12693610-M.jpg",
+                "cover_image": "https://m.media-amazon.com/images/I/612ADI+BVlL._AC_UF1000,1000_QL80_.jpg",
                 "genre": "Dystopian",
             },
             {
@@ -56,7 +58,7 @@ class Command(BaseCommand):
                 "author": author_objects["Harper Lee"],
                 "description": "A novel about racial injustice in the Deep South, seen through the eyes of young Scout Finch.",
                 "published_date": "1960-07-11",
-                "cover_image": "https://covers.openlibrary.org/b/id/12907439-M.jpg",
+                "cover_image": "https://cdn.kobo.com/book-images/4e1af857-e0e8-45fa-8922-e4bff584beca/1200/1200/False/to-kill-a-mockingbird-4.jpg",
                 "genre": "Fiction",
             },
             {
@@ -64,7 +66,7 @@ class Command(BaseCommand):
                 "author": author_objects["F. Scott Fitzgerald"],
                 "description": "A tragic love story set in the roaring 1920s, focusing on Jay Gatsby's obsession with Daisy Buchanan.",
                 "published_date": "1925-04-10",
-                "cover_image": "https://covers.openlibrary.org/b/id/12364437-M.jpg",
+                "cover_image": "https://cdn.kobo.com/book-images/5addc4c9-fbc1-42d7-a79f-cec7619d4b23/1200/1200/False/the-great-gatsby-a-novel-1.jpg",
                 "genre": "Fiction",
             },
             {
@@ -72,8 +74,24 @@ class Command(BaseCommand):
                 "author": author_objects["J.R.R. Tolkien"],
                 "description": "A prelude to The Lord of the Rings, following Bilbo Baggins' journey to reclaim a treasure guarded by Smaug the dragon.",
                 "published_date": "1937-09-21",
-                "cover_image": "https://covers.openlibrary.org/b/id/14627222-M.jpg",
+                "cover_image": "https://m.media-amazon.com/images/I/712cDO7d73L.jpg",
                 "genre": "Fantasy",
+            },
+            {
+                "title": "Pride and Prejudice",
+                "author": author_objects["Jane Austen"],
+                "description": "A masterpiece of wit and social commentary following Elizabeth Bennet's journey to love and self-discovery in Georgian era England.",
+                "published_date": "1813-01-28",
+                "cover_image": "https://m.media-amazon.com/images/I/71Q1tPupKjL._AC_UF1000,1000_QL80_.jpg",
+                "genre": "Romance",
+            },
+            {
+                "title": "Don Quixote",
+                "author": author_objects["Miguel de Cervantes"],
+                "description": "The story of an elderly man who, driven mad by reading too many chivalric romances, decides to become a knight-errant.",
+                "published_date": "1605-01-16",
+                "cover_image": "https://i.harperapps.com/covers/9780062391667/y648.jpg",
+                "genre": "Fiction",
             },
         ]
 

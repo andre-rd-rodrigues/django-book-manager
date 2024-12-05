@@ -1,5 +1,18 @@
 {% extends "book_manager/layout.html" %} 
 {% block body %}
+
 <h1>Best sellers</h1>
+<div class="row mt-5">
+  {% for book in best_sellers %}
+    {% include "book_manager/_book_card.html" with book=book %} 
+  {% endfor %}
+</div>
+
 <h2>Recommended to you</h2>
+
+<div class="row mt-5">
+  {% for book in recommended_to_you %}
+      {% include "book_manager/_book_card.html" with book=book %} 
+  {% endfor %}
+</div>
 {% endblock %}

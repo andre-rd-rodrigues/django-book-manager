@@ -17,4 +17,5 @@ urlpatterns = [
     path('authors', views.authors_page, name='authors_page'),
     path('authors/new', views.add_author_page, name='add_author_page'),
     path('authors/<int:author_id>/edit', views.edit_author_page, name='edit_author_page'),
+    path('authors/<int:author_id>/delete', views.delete_author, name='delete_author'),
 ]
