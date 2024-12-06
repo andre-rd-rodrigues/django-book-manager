@@ -21,7 +21,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . /myproject/
 
 # Ensure the entrypoint script is executable
-RUN chmod +x /myproject/entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
 # Expose the port Django runs on
 EXPOSE 8000
